@@ -59,7 +59,7 @@ print min(newArray)
 sum(oldArray) / float(len(oldArray))
 print sum(newArray) / float(len(newArray))
 for item in range(len(oldArray)-1):
-    print(oldArray)
+    print(oldArray)/
 
 # Eliminate Negative Numbers
 # max, min, and average
