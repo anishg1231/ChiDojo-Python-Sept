@@ -17,8 +17,8 @@ animal.walk().walk().walk().run().run().displayHealth();
 
 
 class Dog(Animal):
-    def __init__(self,name):
-        super(Dog,self).__init__(name)
+    def \
+    it__(name)
         self.health = 150
 
     def pet(self):
