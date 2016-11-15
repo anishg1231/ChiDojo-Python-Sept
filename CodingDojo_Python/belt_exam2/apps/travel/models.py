@@ -2,17 +2,17 @@ from __future__ import unicode_literals
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 import bcrypt
-# Create your models here.
 
+# Create your models here.
 class UserManager(models.Manager):
     def validateReg(self, request):
         errors = []
-        if len(request.POST['name']) == 0:
-            errors.append('Please include a name.')
-        if len(request.POST['alias']) == 0:
-            errors.append('Please include an alias.')
-        if len(request.POST['email']) == 0:
-            errors.append('Please include an email.')
+        if len(request.POST['first_name']) == 0:
+            errors.append('Please include a first name.')
+        if len(request.POST['last_name']) == 0:
+            errors.append('Please include a last name.')
+        if len(request.POST['user_name']) == 0:
+            errors.append('Please include a UserName.')
         if len(request.POST['password']) < 8:
             errors.append('Needs to be at least 8 characters')
         if request.POST['password'] != request.POST['confirm_password']:
@@ -44,6 +44,7 @@ class UserManager(models.Manager):
         if len(errors) > 0:
             return(False, errors)
 
+
 class User(models.Model):
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
@@ -53,15 +54,18 @@ class User(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     objects = UserManager()
 
-class Quotes(models.Model):
-    quoted_by = models.CharField(max_length=255)
-    messages = models.TextField(max_length=1000)
+class Trip(models.Model):
+    destination = models.CharField(max_length=255)
+    description = models.CharField(max_length=255)
+    travel_date_from = models.CharField(max_length=45)
+    travel_date_to = models.CharField(max_length=45)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    User_id = models.ForeignKey(User)
+    user_id = models.ForeignKey(User)
+    
 
-class Favorite(models.Model):
-    User_id = models.ForeignKey(User)
-    Quotes_id = models.ForeignKey(Quotes)
+class OtherTrip(models.Model):
+    user_id = models.ForeignKey(User)
+    trip_id = models.ForeignKey(Trip)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

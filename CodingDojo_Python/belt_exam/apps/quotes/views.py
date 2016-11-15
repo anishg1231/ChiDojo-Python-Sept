@@ -5,10 +5,11 @@ from django.contrib import messages
 from django.contrib.auth.views import logout
 from django.shortcuts import redirect
 # Create your views here.
+def index(request):
+    return render(request, 'quotes/index.html')
 
 def login(request):
     result = User.objects.validateLogin(request)
-    print(result)
     if result[0] == False:
         for message in result[1]:
             messages.add_message(request, messages.ERROR, message)
@@ -19,25 +20,30 @@ def login(request):
 
 def register(request):
     result = User.objects.validateReg(request)
-    print(result)
     if result[0] == False:
         for message in result[1]:
             messages.add_message(request, messages.ERROR, message)
     else:
-        print result
-        messages.add_message(request, messages.ERROR, 'Successful registered')
+        messages.add_message(request, messages.ERROR, 'Registered Complete')
     return redirect('/')
 
-###############################################################################
-def index(request):
-    return render(request, 'quotes/index.html')
 
 def quotes(request):
+    my_favorites = Favorite.objects.filter(User_id=User.objects.get(id=request.session['user_id']))
+    fav_ids = my_favorites.values_list('Quotes_id', flat=True)
+    other_quotes = Quotes.objects.all().exclude(id__in = fav_ids)
     context ={
-    'quote': Quotes.objects.all(),
+    'quotes': other_quotes,
+    'myquotes': my_favorites
     }
-    print ("Way doesnt this work!")
+
+    # Quotes.objects.all().exclude( id = Favorite.objects.filter( user_id = request. session['user_id'], Quotes_id = Quotes.id))
+    # Quotes.objects.all().filter(Quotes.id != Favorite.Quotes_id)
+
+    # quote_list = Quotes.objects.get(id=id)quote_list.delete()
+
     return render(request, 'quotes/quotes.html', context)
+
 
 def new(request):
     return render(request,'quotes/quotes.html')
@@ -45,13 +51,26 @@ def new(request):
 def create(request):
     if len(request.POST['quoted_by']) < 3:
         messages.add_message(request, messages.ERROR, 'Quoted by: More than 3 characters')
-    if len(request.POST['message']) < 10:
+    if len(request.POST['messages']) < 10:
         messages.add_message(request, messages.ERROR, 'Message: More than 10 characters')
-        return redirect('/new')
+        return redirect('/quotes')
     Quotes.objects.create(quoted_by=request.POST['quoted_by'], messages=request.POST['messages'], User_id= User.objects.get(id=request.session['user_id']) )
     return redirect('/quotes')
 
+def favorite(request,quote_id):
+    Favorite.objects.create(Quotes_id=Quotes.objects.get(id=quote_id), User_id= User.objects.get(id=request.session['user_id']) )
+    return redirect('/quotes')
+
+def destroy(request,id):
+    Favorite.objects.get(id=id).delete()
+    return redirect('/quotes')
+
+def show(request, id):
+    context = {
+    'quote': Quotes.objects.get(id=id)
+    }
+    return render(request, 'quotes/show.html', context )
+
 def logout(request):
-    # logout(request)
     request.session.clear()
     return redirect('/')

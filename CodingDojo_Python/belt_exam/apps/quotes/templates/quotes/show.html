@@ -7,8 +7,11 @@
   <body>
     <a href="/quotes">Dashboard</a> | <a href="/logout">Logout</a>
 
-    <h4>Post by Oliver</h4>
-    <h4>Couont: 2</h4>
+    <h4>Post by {{quote.User_id.first_name}}</h4>
+    <h4>Count: 2</h4>
+    <p>
+      {{quote.quoted_by}} : {{quote.messages}}
+    </p>
 
   </body>
 </html>

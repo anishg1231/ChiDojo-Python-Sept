@@ -7,24 +7,33 @@
   <body>
     <a href="/logout">Logout</a>
     <h2>Welcome, {{request.session.user_name}}!</h2>
+
     <h4>Quotable Quotes</h4>
     <table>
       {% for quote in quotes %}
       <tr>
-        <td>{{quote.message}}</td>
-        <td>{{quote.quote_by}}</td>
-        <td>Posted By:{{quote.User_id.first_name}}</td>
-        <td><a href="#">Add to My List</a></td>
+        <td>{{quote.messages}}</td>
+        <td>{{quote.quoted_by}}</td>
+        <td>
+          Posted By: <a href="/show/{{quote.id}}">{{quote.User_id.first_name}}</a>
+        </td>
+        <td><a href="/favorite/{{quote.id}}">Add to My List</a></td>
       </tr>
-    </table>
       {% endfor %}
+    </table>
 
     <h4>Your Favorites</h4>
     <table>
+      {% for favorite in myquotes %}
       <tr>
-        <td></td>
+        <td>{{favorite.Quotes_id.messages}}</td>
+        <td>{{favorite.quote_by}}</td>
+        <td>Posted By:{{favorite.User_id.first_name}}</td>
+        <td><a href="/destroy/{{favorite.id}}">Remove from My List</a></td>
       </tr>
+      {% endfor %}
     </table>
+
     <h4>Contribute a Quote:</h4>
     <form action="/create" method="post">
       {% csrf_token %}
