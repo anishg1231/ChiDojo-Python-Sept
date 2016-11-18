@@ -50,5 +50,16 @@ def reset():
 
 app.run(debug=True)
 
+# (py2DjangoEnv)>django-admin startproject time_display_assignment
+#
+# (py2DjangoEnv)>cd time_display_assignment
+#
+# (py2DjangoEnv)>mkdir apps
+#
+# (py2DjangoEnv)>cd apps
+#
+# (py2DjangoEnv)>nul> __init_.py OR touch __init__.py
+#
+# (py2DjangoEnv)>python ../manage.py startapp timedisplay
 
 #have /process_moneydetermine how much gold the user should have

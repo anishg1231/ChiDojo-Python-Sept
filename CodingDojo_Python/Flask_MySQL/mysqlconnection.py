@@ -1,4 +1,3 @@
-
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import text
 # Create a class that will give us an object that we can use to connect to a database
@@ -9,7 +8,7 @@ class MySQLConnection(object):
                 'database': db, # we got db as an argument
                 'user': 'root',
                 'password': 'root',
-                'port': '3306' # change the port to match the port your SQL server is running on
+                'port': '8889' # change the port to match the port your SQL server is running on
         }
         # this will use the above values to generate the path to connect to your sql database
         DATABASE_URI = "mysql://{}:{}@127.0.0.1:{}/{}".format(config['user'], config['password'], config['port'], config['database'])
